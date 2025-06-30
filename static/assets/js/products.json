@@ -1,0 +1,33 @@
+[
+    {
+        "id": 1,
+        "name": "Gha 310_3",
+        "category": "Carpets",
+        "images": [
+            "assets/img/s1.jpg",
+            "assets/img/s2.jpg",
+            "assets/img/s3.jpg"
+        ],
+        "description": "High-quality carpet for durable and stylish ambiance."
+    },
+    {
+        "id": 2,
+        "name": "Gha 310_7",
+        "category": "Carpets",
+        "images": [
+            "assets/img/s4.jpg",
+            "assets/img/s5.jpg",
+            "assets/img/s6.jpg"
+        ],
+        "description": "Premium carpet designed for modern interiors."
+    },
+    {
+        "id": 3,
+        "name": "Persian Blue Salt",
+        "category": "Salt",
+        "images": [
+            "assets/img/Persian-blue-salt.jpg"
+        ],
+        "description": "Exquisite Persian blue salt for unique flavor and texture."
+    }
+]

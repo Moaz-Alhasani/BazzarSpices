@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            background-color: hsl(176.6deg 42.74% 51.37%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .dashboard-header i {
+            margin-right: 10px;
+        }
+
+        .dashboard-content {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: hsl(176.6deg 42.74% 51.37%);
+            color: white;
+            padding: 1rem 0;
+        }
+
+        .sidebar-header {
+            padding: 0 1rem 1rem;
+            border-bottom: 1px solid #2c3e50;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 80%;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .sidebar-nav button {
+            display: block;
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sidebar-nav button:hover {
+            background-color: #2c3e50;
+        }
+
+        .sidebar-nav button i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-nav button.active {
+            background-color: hsl(45.24deg 90.52% 58.63%);
+            color: white;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            background-color: #ecf0f1;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .section-header h2 i {
+            margin-right: 10px;
+            color: hsl(176.6deg 42.74% 51.37%);
+        }
+
+        .action-btn {
+            background-color: hsl(45.24deg 90.52% 58.63%);
+            color: hsl(176.6deg 42.74% 51.37%);
+            font-size: 1.5rem;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .action-btn i {
+            margin-right: 5px;
+        }
+
+        /* Products Section */
+        .product-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .category-title {
+            margin-top: 0;
+            color: #3498db;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 0;
+        }
+
+        .product-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .product-actions button {
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .product-actions button:hover {
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #3498db;
+        }
+
+        .delete-btn:hover {
+            background-color: #e74c3c;
+        }
+
+        .loading-placeholder {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+        }
+
+        /* Categories Section */
+        .categories-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 0;
+        }
+
+        .category-item {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 2rem auto;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            padding: 2rem;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #e74c3c;
+        }
+
+        .product-form, .category-form {
+            margin-top: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: #7f8c8d;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            position: relative;
+            margin-top: 0.5rem;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .upload-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .upload-btn i {
+            margin-right: 8px;
+        }
+
+        #mainImageFileName,
+        #galleryImagesFileName {
+            margin-left: 10px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+            width: 100%;
+            height: 200px;
+            background-color: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .gallery-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .gallery-preview .gallery-thumb {
+            height: 80px;
+            background-color: #f8f9fa;
+            border: 1px dashed #ddd;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .gallery-preview .gallery-thumb img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .submit-btn {
+            background-color: hsl(176.6deg 42.74% 51.37%);;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color:hsl(45.24deg 90.52% 58.63%) ;
+        }
+
+        .submit-btn i {
+            margin-right: 8px;
+        }
+
+        .cancel-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .cancel-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .cancel-btn i {
+            margin-right: 8px;
+        }
+
+        /* Product Details Modal */
+        .modal-image-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .main-image-container {
+            height: 300px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .main-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .gallery-container .gallery-thumb {
+            height: 100px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .gallery-container .gallery-thumb:hover {
+            border-color: #3498db;
+        }
+
+        .gallery-container .gallery-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-description {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .product-description h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .product-description h3 i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        .product-description p {
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .product-type {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: -0.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .delete-btn i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <img src="/static/assets/img/Logo.png" alt="Company Logo" class="logo">
+                    <h3>Product Management</h3>
+                </div>
+                <nav class="sidebar-nav">
+                    <button id="productsBtn" class="active">
+                        <i class="fas fa-box-open" ></i> Products
+                    </button>
+                    <button id="categoriesBtn">
+                        <i class="fas fa-tags"></i> Categories
+                    </button>
+                </nav>
+            </div>
+
+            <div class="main-content">
+                <!-- Products Management Section -->
+                <section id="productsSection" class="content-section active">
+                    <div class="section-header">
+                        <h2><i class="fas fa-box-open"></i> Product Management</h2>
+                        <button id="addNewProductBtn" class="action-btn">
+                            <i class="fas fa-plus"></i> Add Product
+                        </button>
+                    </div>
+
+                    <div class="product-categories">
+                        <!-- Products will be loaded here by category -->
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i> Loading products...
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Categories Management Section -->
+                <section id="categoriesSection" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tags"></i> Category Management</h2>
+                        <button id="addNewCategoryBtn" class="action-btn">
+                            <i class="fas fa-plus"></i> Add Category
+                        </button>
+                    </div>
+
+                    <div class="category-list-container">
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i> Loading categories...
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Add Product Modal -->
+                <div id="addProductModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+                        <h2 style=" color :hsl(176.6deg 42.74% 51.37%);" ><i class="fas fa-plus-circle"></i> Add New Product</h2>
+                        <form id="addProductForm" class="product-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="productType">
+                                        <i class="fas fa-tag"></i> Product Type
+                                    </label>
+                                    <select id="productType" name="productType" required>
+                                        <option value="">Select a type</option>
+                                        <!-- Categories will be loaded here dynamically -->
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="productName">
+                                        <i class="fas fa-pencil-alt"></i> Product Name
+                                    </label>
+                                    <input type="text" id="productName" name="productName" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productDescription">
+                                    <i class="fas fa-align-left"></i> Description
+                                </label>
+                                <textarea id="productDescription" name="productDescription" rows="4"
+                                    required></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label  for="mainImage">
+                                        <i class="fas fa-image"></i> Main Image
+                                    </label>
+                                    <div class="file-upload">
+                                        <label style="background-color: hsl(176.6deg 42.74% 51.37%); color: white;" for="mainImage" class="upload-btn">
+                                            <i style="color:hsl(45.24deg 90.52% 58.63%)" class="fas fa-cloud-upload-alt"></i> Choose File
+                                        </label>
+                                        <span id="mainImageFileName">No file chosen</span>
+                                        <input type="file" id="mainImage" name="mainImage" accept="image/*" required>
+                                    </div>
+                                    <div id="mainImagePreview" class="image-preview"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        <i class="fas fa-images"></i> Gallery Images
+                                    </label>
+                                    <div class="file-upload">
+                                        <label style="background-color: hsl(176.6deg 42.74% 51.37%); color: white; cursor: pointer;" for="galleryImages" class="upload-btn">
+                                            <i style="color: hsl(45.24deg 90.52% 58.63%)" class="fas fa-cloud-upload-alt"></i> Choose Files
+                                        </label>
+                                        <span id="galleryImagesFileName">No files chosen</span>
+                                        <input type="file" id="galleryImages" name="galleryImages" multiple
+                                            accept="image/*">
+                                    </div>
+                                    <div id="galleryPreview" class="gallery-preview"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="submit-btn">
+                                    <i class="fas fa-save"></i> Save Product
+                                </button>
+                                <button type="button" class="cancel-btn" id="cancelAddProduct">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Add Category Modal -->
+<div id="addCategoryModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2 style="color: hsl(176.6deg 42.74% 51.37%);">
+      <i class="fas fa-plus-circle"></i> Add New Category
+    </h2>
+    <form id="addCategoryForm" class="category-form">
+      <div class="form-group">
+        <label style="color: hsl(176.6deg 42.74% 51.37%);" for="name">
+          <i style="color: hsl(176.6deg 42.74% 51.37%);" class="fas fa-tag"></i> Category Name
+        </label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-save"></i> Save Category
+        </button>
+        <button type="button" class="cancel-btn" id="cancelAddCategory">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+const protocol = window.location.protocol; // سيكون 'http:' أو 'https:'
+const host = window.location.hostname; // localhost أو اسم الدومين في الإنتاج
+const port = window.location.port ? `:${window.location.port}` : ''; // لإضافة البورت إن وجد
+
+const BASE_URL = `${protocol}//${host}${port}`;
+        
+document.addEventListener('DOMContentLoaded', function () {
+  // عناصر التحكم
+  const productsBtn = document.getElementById('productsBtn');
+  const categoriesBtn = document.getElementById('categoriesBtn');
+  const addNewProductBtn = document.getElementById('addNewProductBtn');
+  const addNewCategoryBtn = document.getElementById('addNewCategoryBtn');
+
+  const addProductModal = document.getElementById('addProductModal');
+  const addCategoryModal = document.getElementById('addCategoryModal');
+  const addCategoryForm = document.getElementById('addCategoryForm');
+  const addProductForm = document.getElementById('addProductForm');
+  const cancelAddProductBtn = document.getElementById('cancelAddProduct');
+  const cancelAddCategoryBtn = document.getElementById('cancelAddCategory');
+  const productDetailsModal = document.getElementById('productDetailsModal');
+  const closeDetailsBtn = document.getElementById('closeDetailsBtn');
+  const productTypeSelect = document.getElementById('productType');
+  const closeModalBtns = document.querySelectorAll('.close-modal');
+
+  // متغيرات الحالة
+  let currentProductId = null;
+  let mainImageFile = null;
+  let galleryImageFiles = [];
+  let categories = [];
+
+  // تحميل البيانات عند البداية
+  loadProducts();
+  loadCategories();
+
+  // تنقل بين الأقسام
+  productsBtn?.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-nav button').forEach(btn => btn.classList.remove('active'));
+    productsBtn.classList.add('active');
+    document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+    document.getElementById('productsSection').classList.add('active');
+  });
+
+  categoriesBtn?.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-nav button').forEach(btn => btn.classList.remove('active'));
+    categoriesBtn.classList.add('active');
+    document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+    document.getElementById('categoriesSection').classList.add('active');
+  });
+
+  // فتح المودالات
+  addNewProductBtn?.addEventListener('click', () => {
+    addProductModal.style.display = 'block';
+  });
+
+  addNewCategoryBtn?.addEventListener('click', () => {
+    addCategoryModal.style.display = 'block';
+  });
+
+  // إغلاق المودالات
+  closeModalBtns?.forEach(btn => {
+    btn.addEventListener('click', () => {
+      addProductModal.style.display = 'none';
+      addCategoryModal.style.display = 'none';
+      productDetailsModal.style.display = 'none';
+    });
+  });
+
+  cancelAddProductBtn?.addEventListener('click', () => {
+    addProductModal.style.display = 'none';
+    resetAddProductForm();
+  });
+
+  cancelAddCategoryBtn?.addEventListener('click', () => {
+    addCategoryModal.style.display = 'none';
+    addCategoryForm.reset();
+  });
+
+  closeDetailsBtn?.addEventListener('click', () => {
+    productDetailsModal.style.display = 'none';
+  });
+
+  // إغلاق المودال بالنقر خارج النافذة
+  window.addEventListener('click', (e) => {
+    if (e.target === addProductModal || e.target === addCategoryModal || e.target === productDetailsModal) {
+      addProductModal.style.display = 'none';
+      addCategoryModal.style.display = 'none';
+      productDetailsModal.style.display = 'none';
+    }
+  });
+
+  // رفع الصورة الرئيسية
+  document.getElementById('mainImage')?.addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (file) {
+      mainImageFile = file;
+      document.getElementById('mainImageFileName').textContent = file.name;
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        document.getElementById('mainImagePreview').innerHTML = `<img src="${event.target.result}" alt="Main Image" style="max-width:150px;">`;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // رفع الصور الفرعية
+  document.getElementById('galleryImages')?.addEventListener('change', function (e) {
+    const files = Array.from(e.target.files);
+    galleryImageFiles = [...galleryImageFiles, ...files];
+    document.getElementById('galleryImagesFileName').textContent = `${galleryImageFiles.length} files selected`;
+    updateGalleryPreview();
+  });
+
+  function updateGalleryPreview() {
+    const preview = document.getElementById('galleryPreview');
+    preview.innerHTML = '';
+    galleryImageFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const div = document.createElement('div');
+        div.className = 'gallery-thumb';
+        div.innerHTML = `<img src="${event.target.result}" alt="Gallery Image" style="max-width:100px; margin:5px;">`;
+        preview.appendChild(div);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // إرسال نموذج إضافة منتج
+  addProductForm?.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const categoryId = productTypeSelect.value;
+    const name = document.getElementById('productName').value.trim();
+    const description = document.getElementById('productDescription').value.trim();
+
+    if (!categoryId || isNaN(parseInt(categoryId))) return alert('Please select a valid category');
+    if (!name || !description || !mainImageFile) return alert('Please fill all required fields');
+
+    const formData = new FormData();
+    formData.append('categoryId', categoryId);
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('imageUrl', mainImageFile);
+    galleryImageFiles.forEach(file => formData.append('subImageUrls', file));
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/v1/admin/addproduct`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Failed to add product');
+
+      alert('Product added successfully!');
+      resetAddProductForm();
+      addProductModal.style.display = 'none';
+      loadProducts();
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error: ' + error.message);
+    }
+  });
+
+  // إرسال نموذج إضافة فئة
+  addCategoryForm?.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const categoryName = document.getElementById('name').value.trim();
+    if (!categoryName) return alert('Please enter a category name');
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/v1/admin/addCategory`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ name: categoryName })
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Failed to add category');
+
+      alert(data.message);
+      addCategoryModal.style.display = 'none';
+      addCategoryForm.reset();
+      if (typeof loadCategories === 'function') loadCategories();
+    } catch (error) {
+      console.error('Error:', error);
+      alert(error.message);
+    }
+  });
+
+
+    
+    // Delete product
+    deleteProductBtn.addEventListener('click', function () {
+        if (!currentProductId) return;
+
+        if (confirm('Are you sure you want to delete this product?')) {
+            fetch(`/api/products/${currentProductId}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Product deleted successfully!');
+                        productDetailsModal.style.display = 'none';
+                        loadProducts();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error deleting product');
+                });
+        }
+    });
+
+    // Functions
+
+function loadProducts() {
+  fetch(`${BASE_URL}/api/v1/admin/getAllProduct`, {
+    credentials: 'include'
+  })
+    .then(response => response.json())
+    .then(res => {
+      if (res.data && Array.isArray(res.data)) {
+        displayProductsByCategory(res.data);
+      } else {
+        throw new Error('Invalid data format');
+      }
+    })
+    .catch(error => {
+      console.error('Error loading products:', error);
+      document.querySelector('.product-categories').innerHTML = `
+        <div class="error-message">
+          <i class="fas fa-exclamation-circle"></i>
+          <p>Error loading products. Please try again later.</p>
+        </div>
+      `;
+    });
+}
+
+
+function loadCategories() {
+    fetch(`${BASE_URL}/api/v1/admin/getcategores`, {
+        credentials: 'include'
+    })
+        .then(response => response.json())
+        .then(res => {
+            if (res.data && Array.isArray(res.data)) {
+                displayCategories(res.data);                 // ✅ تمرير المصفوفة فقط
+                updateCategoryDropdown(res.data);           // ✅ لتحديث Dropdown في نموذج إضافة منتج
+            } else {
+                throw new Error('Invalid data format');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading categories:', error);
+            document.querySelector('.category-list-container').innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>Error loading categories. Please try again later.</p>
+                </div>
+            `;
+        });
+}
+
+
+function updateCategoryDropdown(categories) {
+    const select = document.getElementById('productType');
+    select.innerHTML = '<option value="">Select a type</option>';
+    
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;  // استخدم category.id بدلاً من الاسم
+        option.textContent = category.name;
+        select.appendChild(option);
+    });
+}
+
+function displayCategories(categories) {
+    const container = document.querySelector('.category-list-container');
+    if (!categories || categories.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-tags"></i>
+                <p>No categories found. Add your first category to get started.</p>
+            </div>
+        `;
+        return;
+    }
+
+    const categoryList = document.createElement('ul');
+    categoryList.className = 'categories-list';
+
+    categories.forEach(category => {
+        const categoryItem = document.createElement('li');
+        categoryItem.className = 'category-item';
+        categoryItem.innerHTML = `
+            <span>${category.name}</span>
+            <button class="delete-btn" data-id="${category.id}">
+                <i class="fas fa-trash"></i>
+            </button>
+        `;
+        categoryList.appendChild(categoryItem);
+    });
+
+    container.innerHTML = '';
+    container.appendChild(categoryList);
+
+document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const categoryId = this.getAttribute('data-id');
+        if (confirm('Are you sure you want to delete this category?')) {
+            fetch(`${BASE_URL}/api/v1/admin/delete/${categoryId}`, {
+                method: 'DELETE'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Category deleted successfully');
+                        loadCategories(); // إعادة تحميل الفئات بعد الحذف
+                    } else {
+                        alert(data.message || 'Error deleting category');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Failed to delete category');
+                });
+        }
+    });
+});
+
+}
+
+function displayProductsByCategory(categoriesWithProducts) {
+    const productCategoriesContainer = document.querySelector('.product-categories');
+    productCategoriesContainer.innerHTML = '';
+
+    if (!categoriesWithProducts || categoriesWithProducts.length === 0) {
+        productCategoriesContainer.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-box-open"></i>
+                <p>No products found. Add your first product to get started.</p>
+            </div>
+        `;
+        return;
+    }
+
+    categoriesWithProducts.forEach(category => {
+        const categorySection = document.createElement('div');
+        categorySection.className = 'category-section';
+
+        const categoryTitle = document.createElement('h2');
+        categoryTitle.className = 'category-title';
+        categoryTitle.textContent = category.name;
+
+        const productList = document.createElement('ul');
+        productList.className = 'product-list';
+
+        category.products.forEach(product => {
+            const productItem = document.createElement('li');
+            productItem.className = 'product-item';
+            productItem.innerHTML = `
+                <span>${product.name}</span>
+                <div class="product-actions">
+
+                    <button class="delete-btn" data-id="${product.id}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+
+            productList.appendChild(productItem);
+        });
+
+        categorySection.appendChild(categoryTitle);
+        categorySection.appendChild(productList);
+        productCategoriesContainer.appendChild(categorySection);
+    });
+
+    // Event listeners for edit buttons
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const productId = this.getAttribute('data-id');
+            showProductDetails(productId); // يجب أن تكون لديك هذه الدالة معرفة مسبقًا
+        });
+    });
+
+    // Event listeners for delete buttons
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const productId = this.getAttribute('data-id');
+            if (confirm('Are you sure you want to delete this product?')) {
+                fetch(`${BASE_URL}/api/v1/admin/deleteproduct/${productId}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Product deleted successfully!');
+                            loadProducts();
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+
+                    });
+            }
+        });
+    });
+}
+
+
+});
+    </script>
+</body>
+
+</html>

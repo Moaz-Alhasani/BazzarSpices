@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "icon": "ri-building-line",
+        "title": "Building Materials",
+        "description": "We provide a comprehensive selection of high-quality building materials for various construction products."
+    },
+    {
+        "id": 2,
+        "icon": "ri-lightbulb-flash-line",
+        "title": "Energy",
+        "description": "In the field of renewable energy, we focus on forward-thinking solutions."
+    },
+    {
+        "id": 3,
+        "icon": "ri-restaurant-line",
+        "title": "Food",
+        "description": "Discover our exquisite selection of premium foods and spices."
+    },
+    {
+        "id": 4,
+        "icon": "ri-home-3-line",
+        "title": "Interior Design",
+        "description": "For a stylish ambiance, we offer carpets with European Quality (durable and appealing designs)."
+    }
+]

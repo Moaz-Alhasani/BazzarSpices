@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: hsl(176.6deg 42.74% 51.37%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 90vh;
+    }
+
+    .container {
+      background: hsl(45.24deg 90.52% 58.63%);
+      color: hsl(176.6deg 42.74% 51.37%);
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 320px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 10px;
+    }
+
+    input {
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid hsl(176.6deg 42.74% 51.37%);
+      border-radius: 5px;
+      outline: none;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: hsl(176.6deg 42.74% 51.37%);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: hsla(177, 43%, 51%, 0.693);
+    }
+
+    #message {
+      margin-top: 15px;
+      text-align: center;
+      color: red;
+    }
+
+    .separator {
+      text-align: center;
+      margin: 15px 0;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      padding: 10px;
+      cursor: pointer;
+      background-color: white;
+      border: 1px solid #ccc;
+      transition: 0.3s;
+    }
+
+    .google-icon {
+      font-size: 20px;
+      margin-right: 10px;
+      color: #db3236;
+    }
+
+    .btn-text {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Sign In</h2>
+
+    <!-- Email Form Only -->
+    <form id="loginForm">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+
+      <button type="submit">Sign In</button>
+    </form>
+
+    <p id="message"></p>
+
+    <div class="separator">or</div>
+
+    <!-- Google Sign-In Button -->
+    <div class="google-btn" onclick="googleLogin()">
+      <span class="google-icon">&#x47;</span>
+      <span class="btn-text">Sign in with Google</span>
+    </div>
+  </div>
+
+  <script>
+    const protocol = window.location.protocol; // سيكون 'http:' أو 'https:'
+const host = window.location.hostname; // localhost أو اسم الدومين في الإنتاج
+const port = window.location.port ? `:${window.location.port}` : ''; // لإضافة البورت إن وجد
+
+const BASE_URL = `${protocol}//${host}${port}`;
+
+// استخدام BASE_URL في الطلبات:
+function googleLogin() {
+  window.location.href = `${BASE_URL}/auth_google/google`;
+}
+
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById('email').value.trim();
+
+  try {
+    const response = await fetch(`${BASE_URL}/api/v2/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email })
+    });
+
+    const result = await response.json();
+    const messageEl = document.getElementById('message');
+
+    if (!response.ok) {
+      messageEl.textContent = result.message || 'Login failed';
+    } else {
+      messageEl.style.color = 'green';
+      messageEl.textContent = 'Login successful!';
+      localStorage.setItem('token', result.token);
+      setTimeout(() => {
+        window.location.href = `${BASE_URL}/`;
+      }, 1500);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    document.getElementById('message').textContent = 'An error occurred. Try again.';
+  }
+});
+
+  </script>
+</body>
+</html>
