@@ -311,7 +311,7 @@
                         chat with me
                      </h3>
                      <div class="contact__social">
-                        <a href="https://api.whatsapp.com/send?phone=51123456789&text=Hello, more information!"
+                        <a href="https://api.whatsapp.com/send?phone=4917647661443&text=Hello, more information!"
                            target="_blank" class="contact__social-link"><i class="ri-whatsapp-line"></i></a>
                         <a href="" target="_blank" class="contact__social-link"><i class="ri-messenger-line"></i></a>
                         <a href="" target="_blank" class="contact__social-link"><i class="ri-telegram-line"></i></a>
@@ -338,10 +338,10 @@
                   <h3 class="contact__title" style="margin-bottom: 2rem;">Join Our Community</h3>
 
 <!-- add the link of the sign in page  -->
-                  <a href="http://localhost:3000/api/v2/auth/login" class="contact__form-button">
-                     Go to Sign Up Page
-                     <i class="ri-arrow-right-line"></i>
-                  </a>
+               <a id="signupLink" class="contact__form-button">
+                  Go to Sign Up Page
+                  <i class="ri-arrow-right-line"></i>
+               </a>
                </div>
             </div>
          </div>
@@ -429,7 +429,16 @@
    <a href="#" class="scrollup" id="scroll-up" aria-label="Scroll to top">
       <i class="ri-arrow-up-line"></i>
    </a>
+   <script>
+  const protocol = window.location.protocol; // 'http:' أو 'https:'
+  const host = window.location.hostname;     // 'localhost' أو اسم النطاق
+  const port = window.location.port ? `:${window.location.port}` : ''; // إضافة البورت إن وجد
+  const BASE_URL = `${protocol}//${host}${port}`;
 
+  // تحديث الرابط ديناميكيًا
+  const signupLink = document.getElementById('signupLink');
+  signupLink.href = `${BASE_URL}/api/v2/auth/login`;
+</script>
    <!--=============== SCROLLREVEAL ===============-->
    <script src="../static/assets/js/scrollreveal.min.js"></script>
 
